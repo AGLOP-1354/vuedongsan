@@ -2,8 +2,10 @@
 
   <div class="black-bg" v-if="modal_state == true">
     <div class="white-bg">
-      <h4>상세페이지</h4>
-      <p>상세페이지 내용</p>
+      <img :src="products[modal_number].image" >
+      <h4>{{ products[modal_number].title }}</h4>
+      <p>{{ products[modal_number].content }}</p>
+      <p>{{ products[modal_number].price }} 원</p>
       <button @click="modal_state = false">닫기</button>
     </div>
   </div>
@@ -13,21 +15,21 @@
     <a v-for="menu_item in menus" :key="menu_item" >{{ menu_item }}</a>
   </div>
 
-  <div>
-    <img src="./public/room0.jpg" class="room-img">
-    <h4 @click="modal_state = true">{{ products[0].title }}</h4>
-    <p>{{ products[0].price }} 원</p>
+  <div v-for="(a,i) in products" :key="i">
+    <img :src="products[i].image" class="room-img">
+    <h4 @click="modal_state = true, modal_number = i" class="modal_open">{{ products[i].title }}</h4>
+    <p>{{ products[i].price }} 원</p>
   </div>
-  <div>
-    <img src="./public/room1.jpg" class="room-img">
+  <!-- <div>
+    <img :src="products[1].image" class="room-img">
     <h4 @click="modal_state = true">{{ products[1].title }}</h4>
     <p>80 만원</p>
   </div>
   <div>
-    <img src="./public/room2.jpg" class="room-img">
+    <img :src="products[2].image" class="room-img">
     <h4 @click="modal_state = true">{{ products[2].title }}</h4>
     <p>45 만원</p>
-  </div>
+  </div> -->
 
 
 </template>
@@ -39,6 +41,7 @@ export default {
   name: 'App',
   data(){
     return {
+      modal_number : 0,
       modal_state : false,
       신고수 : [0, 0, 0],
       menus : ["Home", 'Products', "About"],
@@ -100,4 +103,10 @@ div {
   border-radius: 8px;
   padding: 20px;
 } 
+.white-bg img{
+  max-width: 80%;
+}
+.modal_open{
+  cursor: pointer;
+}
 </style>
