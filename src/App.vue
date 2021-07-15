@@ -1,61 +1,54 @@
 <template>
 
-  <div class="black-bg" v-if="modal_state == true">
-    <div class="white-bg">
-      <img :src="products[modal_number].image" >
-      <h4>{{ products[modal_number].title }}</h4>
-      <p>{{ products[modal_number].content }}</p>
-      <p>{{ products[modal_number].price }} 원</p>
-      <button @click="modal_state = false">닫기</button>
-    </div>
-  </div>
+  <!-- 메뉴 -->
+  <Menu :menus="menus"/>
 
+  <!-- 모달창 -->
+  <Modal 
+  @closeModal="modal_state = false"
+  :modal_number="modal_number" 
+  :modal_state="modal_state" 
+  :products="products" 
+  />
 
-  <div class="menu">
-    <a v-for="menu_item in menus" :key="menu_item" >{{ menu_item }}</a>
-  </div>
+  <!-- 할인 모달 -->
+  <Discount />
 
-  <div v-for="(a,i) in products" :key="i">
-    <img :src="products[i].image" class="room-img">
-    <h4 @click="modal_state = true, modal_number = i" class="modal_open">{{ products[i].title }}</h4>
-    <p>{{ products[i].price }} 원</p>
-  </div>
-  <!-- <div>
-    <img :src="products[1].image" class="room-img">
-    <h4 @click="modal_state = true">{{ products[1].title }}</h4>
-    <p>80 만원</p>
-  </div>
-  <div>
-    <img :src="products[2].image" class="room-img">
-    <h4 @click="modal_state = true">{{ products[2].title }}</h4>
-    <p>45 만원</p>
-  </div> -->
+  <!-- 상품 카드 -->
+  <ItemList
+  @openModal="modal_state = true, modal_number = i"
+  :modal_number="modal_number" 
+  :modal_state="modal_state" 
+  :products="products[i]" 
+  v-for="(a,i) in products" :key="a"
+  />
+
 
 
 </template>
 
 <script>
-import Item_info from './assets/post'
+import Item_info from './assets/post.js'
+import Discount from './components/Discount.vue'
+import ItemList from './components/ItemList.vue'
+import Modal from './components/Modal.vue'
+import Menu from './components/Menu.vue'
 
 export default {
   name: 'App',
   data(){
-    return {
-      modal_number : 0,
-      modal_state : false,
-      신고수 : [0, 0, 0],
-      menus : ["Home", 'Products', "About"],
-      products : Item_info
-    }
-  },
-  methods : {
-    increase(){
-      this.신고수++
-    }
-  },
-
-
+        return {
+            modal_number : 0,
+            modal_state : false,
+            menus : ["Home", 'Products', "About"],
+            products : Item_info
+            }
+    },
   components: {
+    Discount : Discount,
+    ItemList : ItemList,
+    Modal : Modal,
+    Menu : Menu
   }
 }
 </script>
@@ -73,40 +66,5 @@ body {
 }
 div {
   box-sizing: border-box;
-}
-.menu {
-  background : darkslateblue;
-  padding : 15px;
-  border-radius : 5px;
-}
-.menu a {
-  color : white;
-  padding : 10px;
-}
-.room-img{
-  width: 100%;
-  margin-top: 5px;
-  padding: 15px;
-}
-.black-bg {
-  width: 100%; 
-  height:100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,0.5);
-  position: fixed; padding: 20px;
-}
-.white-bg {
-  width: 80%;
-  background: white;
-  border-radius: 8px;
-  padding: 20px;
-} 
-.white-bg img{
-  max-width: 80%;
-}
-.modal_open{
-  cursor: pointer;
 }
 </style>
